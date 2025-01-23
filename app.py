@@ -9,7 +9,8 @@ st.warning("Por favor, rocure  o instrumento que você esta aprendendo." )
 
 import streamlit as st
 
-
+st.page_link("app.py", label="Home", icon="🏠")
+st.page_link("http://www.google.com", label="Pesquisa no Google", icon="🌎")
 
 
 
