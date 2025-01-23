@@ -1,92 +1,62 @@
 import streamlit as st
 import pymongo # Importando o PyMongo
+from pymongo import MongoClient
 
-
-#congiguração da pagina
-st.set_page_config(page_title="Vídeo Aulas", page_icon=":clapper:", layout="wide")
-#logomarca gratis de fanfarra
-st.warning("Por favor, rocure  o instrumento que você esta aprendendo." )
-
-
-st.page_link("http://www.google.com", label="Pesquisa no Google", icon="🌎")
+st.set_page_config(page_title="Pagina de Duvidas", page_icon=":clapper:", layout="wide")
 
 
 
 
 
 
+# Configuração da conexão com o MongoDB
+client = MongoClient("mongodb+srv://user_01:sucesso1807@cluster0.slfd3no.mongodb.net/")  # Substitua pelo URI do MongoDB
+# Nome do banco de dados e coleção
+db = client["duvidas_db"]
+collection = db["duvidas"]
 
+st.title("Digite sua dúvida")
 
-st.title("VídeoAulas")
+# Captura do nome do aluno
+nome = st.text_input("Digite seu nome")
+st.write(f"Olá, {nome}!")
 
+# Checkbox para anonimato
+anonimo = st.checkbox("Anônimo")
+if anonimo:
+    st.write("Você está enviando a dúvida de forma anônima.")
 
+# Captura da dúvida
+duvida = st.text_area("Digite sua dúvida")
 
-# Dados das videoaulas
-videos1 = [
-    {"titulo": "CAIXA -Série Rítmica I para Iniciantes", "link": "https://www.youtube.com/watch?v=DkxnqK6gsVU", "descricao": "Como rufar caixa."},
-    {"titulo": "CAIXA - Série Rítmica II para Iniciantes", "link": "https://www.youtube.com/watch?v=gs9bhlS_vF8", "descricao": "Exercícios de iniciação ao rítmo na caixa."},
-    {"titulo": "GRUPO - Percussão, Prática em grupo rítmo: SENTA LEVANTA", "link": "https://www.youtube.com/watch?v=R97KiN0kJ94", "descricao": "Prática em grupo: SURDO, CAIXA E PRATOS ."},
-    {"titulo": "BUMBO - Percussão BUMBO", "link": "https://www.youtube.com/watch?v=I39EG_oRNiQ", "descricao": "Exercícios para BUMBO."},
-    {"titulo": "PRATOS - Série Rítmica", "link": "https://www.youtube.com/watch?v=07tN0ghJZAU", "descricao": "Introdução a prática com pratos."},
-    {"titulo": "TROMPETE - Aula I", "link": "https://www.youtube.com/watch?v=VjqgWwVNFUs", "descricao": "Aprenda os conceitos básicos sobre o trompete."},
-    {"titulo": "TROMPETE - Tocando DO,RÈ, MI,FA, SOL", "link": "https://www.youtube.com/watch?v=AD-weQlmMkE", "descricao": "Tocando as notas Dó-Ré-Mi-Fá-Sol no Trompete Bb."},
-    {"titulo": "EMBOCADURA - trompete, tuba, trombone, bombardino", "link": "https://www.youtube.com/watch?v=GJVBdwKrFOQ", "descricao": "Como fazer EMBOCADURA PERFEITA | trompete, tuba, trombone, bombardino."},
-    {"titulo": "BOMBARDINO - Escala de Dó", "link": "https://www.youtube.com/watch?v=5ZX5Ec16bZM", "descricao": "Escala de Dó maior no Bombardino."},
-    
-]
+# Botão para enviar
+enviar = st.button("Enviar")
 
-
-
-videos = [
-    {"titulo": "CAIXA -Série Rítmica I para Iniciantes", "link": "https://www.youtube.com/watch?v=DkxnqK6gsVU", "descricao": "Como rufar caixa."},
-    {"titulo": "CAIXA - Série Rítmica II para Iniciantes", "link": "https://www.youtube.com/watch?v=gs9bhlS_vF8", "descricao": "Exercícios de iniciação ao rítmo na caixa."},
-    {"titulo": "GRUPO - Percussão, Prática em grupo rítmo: SENTA LEVANTA", "link": "https://www.youtube.com/watch?v=R97KiN0kJ94", "descricao": "Prática em grupo: SURDO, CAIXA E PRATOS ."},
-    {"titulo": "BUMBO - Percussão BUMBO", "link": "https://www.youtube.com/watch?v=I39EG_oRNiQ", "descricao": "Exercícios para BUMBO."},
-    {"titulo": "PRATOS - Série Rítmica", "link": "https://www.youtube.com/watch?v=07tN0ghJZAU", "descricao": "Introdução a prática com pratos."},
-    {"titulo": "TROMPETE - Aula I", "link": "https://www.youtube.com/watch?v=VjqgWwVNFUs", "descricao": "Aprenda os conceitos básicos sobre o trompete."},
-    {"titulo": "TROMPETE - Tocando DO,RÈ, MI,FA, SOL", "link": "https://www.youtube.com/watch?v=AD-weQlmMkE", "descricao": "Tocando as notas Dó-Ré-Mi-Fá-Sol no Trompete Bb."},
-    {"titulo": "EMBOCADURA - trompete, tuba, trombone, bombardino", "link": "https://www.youtube.com/watch?v=GJVBdwKrFOQ", "descricao": "Como fazer EMBOCADURA PERFEITA | trompete, tuba, trombone, bombardino."},
-    {"titulo": "BOMBARDINO - Escala de Dó", "link": "https://www.youtube.com/watch?v=5ZX5Ec16bZM", "descricao": "Escala de Dó maior no Bombardino."},
-    
-]
-
-# Criando colunas para exibir os vídeos
-num_videos = len(videos1)
-cols = st.columns(3)  # Dividindo a interface em 3 colunas
-
-for i, video in enumerate(videos1):
-    col = cols[i % 3]  # Alterna entre as 3 colunas
-    with col:
-        st.video(video["link"])
-        st.subheader(video["titulo"])
-        st.caption(video["descricao"])
-
-st.title("PROFESSOR SÉRGIO ")
-
-# Criando colunas para exibir os vídeos
-num_videos = len(videos)
-cols = st.columns(3)  # Dividindo a interface em 3 colunas
-
-for i, video in enumerate(videos):
-    col = cols[i % 3]  # Alterna entre as 3 colunas
-    with col:
-        st.video(video["link"])
-        st.subheader(video["titulo"])
-        st.caption(video["descricao"])
+if enviar:
+    if duvida.strip():
+        # Dados a serem armazenados no MongoDB
+        duvida_data = {
+            "nome": "Anônimo" if anonimo else nome.strip(),
+            "duvida": duvida.strip(),
+        }
+        
+        # Inserindo no MongoDB
+        collection.insert_one(duvida_data)
+        st.success("Dúvida enviada com sucesso!")
+    else:
+        st.error("Por favor, digite uma dúvida antes de enviar.")
 
 
 
+# Seção para exibir dúvidas frequentes
+st.title("Dúvidas Frequentes")
+duvidas_frequentes = collection.find()
 
-
-#funcao para guardar videos
-def guardar_video():
-    st.title("Adicionar um novo vídeo")
-    titulo = st.text_input("Título")
-    link = st.text_input("Link")
-    descricao = st.text_area("Descrição")
-    if st.button("Salvar"):
-        videos.append({"titulo": titulo, "link": link, "descricao": descricao})
-        st.success("Vídeo adicionado com sucesso!")
-
+if collection.count_documents({}) > 0:
+    for d in duvidas_frequentes:
+        st.subheader(f"Nome: {d['nome']}")
+        st.write(f"Dúvida: {d['duvida']}")
+else:
+    st.write("Nenhuma dúvida registrada ainda.")
 
 
