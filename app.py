@@ -1,5 +1,5 @@
 import streamlit as st
-
+import pymongo # Importando o PyMongo
 
 
 #congiguração da pagina
@@ -7,10 +7,12 @@ st.set_page_config(page_title="Vídeo Aulas", page_icon=":clapper:", layout="wid
 #logomarca gratis de fanfarra
 st.warning("Por favor, rocure  o instrumento que você esta aprendendo." )
 
-import streamlit as st
 
-st.page_link("app.py", label="Home", icon="🏠")
 st.page_link("http://www.google.com", label="Pesquisa no Google", icon="🌎")
+
+
+
+
 
 
 
